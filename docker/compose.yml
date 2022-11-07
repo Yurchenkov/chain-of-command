@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  php:
+    build: ./php
+    expose:
+      - 9000
+    volumes:
+      - ../public:/var/www/html:delegated
+    working_dir: /var/www
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - php
+    volumes:
+      - ../public:/var/www/html
+
+  composer:
+    image: composer
+    volumes:
+      - ../app:/app
+    command: install
